@@ -206,12 +206,12 @@ step is to complete the exercises in `Course.Optional`.
 
 After this, we recommend the following progression of modules:
 
-* `Course.List`
-* `Course.Functor`
-* `Course.Applicative`
-* `Course.Monad`
-* `Course.FileIO`
-* `Course.State`
+* `Course.List` **Done**
+* `Course.Functor` **Done**
+* `Course.Applicative` **Done**
+* `Course.Monad` **Done**
+* `Course.FileIO` **Done**
+* `Course.State` **Done**
 * `Course.StateT`
 * `Course.Extend`
 * `Course.Comonad`
