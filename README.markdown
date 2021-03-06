@@ -212,7 +212,7 @@ After this, we recommend the following progression of modules:
 * `Course.Monad` **Done**
 * `Course.FileIO` **Done**
 * `Course.State` **Done**
-* `Course.StateT`
+* `Course.StateT` **Done**
 * `Course.Extend`
 * `Course.Comonad`
 * `Course.Contravariant`
