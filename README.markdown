@@ -213,12 +213,12 @@ After this, we recommend the following progression of modules:
 * `Course.FileIO` **Done**
 * `Course.State` **Done**
 * `Course.StateT` **Done**
-* `Course.Extend`
-* `Course.Comonad`
-* `Course.Contravariant`
-* `Course.Compose`
-* `Course.Traversable`
-* `Course.ListZipper`
+* `Course.Extend` **Done**
+* `Course.Comonad` **Done**
+* `Course.Contravariant` **Done**
+* `Course.Compose` **Done**
+* `Course.Traversable` **Done**
+* `Course.ListZipper` **Done**
 * `Course.Parser` *(see also `Course.Person` for the parsing rules)*
 * `Course.MoreParser`
 * `Course.JsonParser`
