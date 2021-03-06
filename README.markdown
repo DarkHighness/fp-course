@@ -221,11 +221,11 @@ After this, we recommend the following progression of modules:
 * `Course.ListZipper` **Done**
 * `Course.Parser` *(see also `Course.Person` for the parsing rules)* **Done**
 * `Course.MoreParser` **Done**
-* `Course.JsonParser`
-* `Course.Interactive`
-* `Course.Anagrams`
-* `Course.FastAnagrams`
-* `Course.Cheque`
+* `Course.JsonParser` **Done**
+* `Course.Interactive` **Done**
+* `Course.Anagrams` **Done**
+* `Course.FastAnagrams` **Done**
+* `Course.Cheque` **Copyed Done**
 
 During this progression, it is often the case that some exercises are abandoned
 due to time constraints and the benefit of completing some exercises over

@@ -1,3 +1,4 @@
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE OverloadedStrings #-}
@@ -323,5 +324,75 @@ fromChar _ =
 dollars ::
   Chars
   -> Chars
-dollars =
-  error "todo: Course.Cheque#dollars"
+dollars digits = dollarsString ++ " and " ++ centsString
+  where (dollarsString, centsString) =
+          first (dollars' . stripLeft0 . mapOpt fromChar)
+          . second (cents . mapOpt fromChar)
+          . break (=='.')
+          $ digits
+        dollars' :: List Digit -> Chars
+        dollars' = \case
+                     Nil -> "zero dollars"
+                     One :. Nil -> "one dollar" 
+                     d -> ( foldRight joinWithSpace Nil
+                          . reverse
+                          . filter (not . isPrefixOf "zero")
+                          . zipWith (flip joinWithSpace) illion
+                          . map showD3
+                          . group
+                          . reverse
+                          $ d
+                          ) ++ " dollars"
+        cents = \case
+                  Nil -> "zero cents"
+                  Zero :. One :. Nil -> "one cent"
+                  t :. Nil -> showD3 (D2 t Zero) ++ " cents"
+                  t :. o :. _ -> showD3 (D2 t o) ++ " cents"
+        joinWithSpace :: Chars -> Chars -> Chars
+        joinWithSpace x y
+          | y == "" = x
+          | otherwise = x ++ " " ++ y
+        stripLeft0 Nil = Nil
+        stripLeft0 (Zero :. r) = stripLeft0 r 
+        stripLeft0 x = x
+
+mapOpt :: (a -> Optional b) -> List a -> List b
+mapOpt _ Nil = Nil
+mapOpt f (x :. xs) = optional (:.) id (f x) (mapOpt f xs)
+
+group :: List Digit -> List Digit3
+group Nil = Nil
+
+group (o :. Nil) = D1 o :. Nil
+
+group (o :. Zero :. Nil) = D1 o   :. Nil
+group (o :. t    :. Nil) = D2 t o :. Nil
+
+group (o :. Zero :. Zero :. r) = D1 o     :. group r
+group (o :. t    :. Zero :. r) = D2 t o   :. group r
+group (o :. t    :. h    :. r) = D3 h t o :. group r
+
+
+showD3 :: Digit3 -> Chars
+showD3 (D3 Zero t o) = showD3 (D2 t o)
+showD3 (D3 h Zero Zero) = showDigit h ++ " hundred"
+showD3 (D3 h t o) = showDigit h ++ " hundred and " ++ showD3 (D2 t o)
+
+showD3 (D2 Zero  o) = showD3 (D1 o)
+showD3 (D2 One   Zero)  = "ten"
+showD3 (D2 Two   Zero)  = "twenty"
+showD3 (D2 Three Zero)  = "thirty"
+showD3 (D2 Four  Zero)  = "forty"
+showD3 (D2 Five  Zero)  = "fifty"
+showD3 (D2 Eight Zero)  = "eighty"
+showD3 (D2 t     Zero)  = showDigit t ++ "ty"
+showD3 (D2 One   One)   = "eleven"
+showD3 (D2 One   Two)   = "twelve"
+showD3 (D2 One   Three) = "thirteen"
+showD3 (D2 One   Five)  = "fifteen"
+showD3 (D2 One   o)     = showDigit o ++ "teen"
+showD3 (D2 t     o)     = showD3 (D2 t Zero) ++ "-" ++ showDigit o
+
+showD3 (D1 o) = showDigit o
+
+-- from: https://github.com/cafce25/fp-course/blob/aa70d3a26139a6e0f09ddb88e405135d94e16c61/src/Course/Cheque.hs#L324
